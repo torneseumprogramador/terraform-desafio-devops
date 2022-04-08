@@ -1,0 +1,1 @@
+Estamos [4] aprendendo o terraform utilizando a linguagem HCL
