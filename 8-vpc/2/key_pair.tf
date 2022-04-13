@@ -1,0 +1,4 @@
+resource "aws_key_pair" "chave_ssh_desafio" {
+  key_name   = "chave_ssh_desafio_pub"
+  public_key = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDRSBX1LBV5FE57BpATxHHh36kqIPTiUnWMg0LRvmjzoQFie2keA5FNP17s2fefqQP4EJOiElU8m+UeTLORoBfw/EWTFkAVQoTMZX+tpgWNgY6JPMy/zm0wRn2YXmX+KXO3h4kW2eB1gg2vK5hscXIIS60T2RPlph8Ht9AZDMuZnCpwUvjap939FSHu+Fiziu1lcesEWC4+Vtef0e7J/0o40XVlAkL56x36vBIM+63NLqlG+ZaJ9Q/sqsSIb3hOlBLZGMOffQZhp46JHRTS+ogAJ5Gpj1cmNK/o5+eFzdIICBixNiXkqBpyuv9V8E+rEKkP99nkdUBLh39+9ymdxqakxdoxQ/kiQqDjsabWeffuGzwMnuoVPySkc5B1Syrp1OM2OhmZY2SLg9XeNcUqf5gaOnDiQPp9zLtYQTd30ob/+86lOyUYG2L/t/EFnp2yFJwvsriK322USQ11X6aDJ9vQkjXvmmWBMyXbbSHvMJ17Pc59z3/Nx6It7s5T1P1m+Rk= danilo@Macbooks-MacBook-Pro.local"
+}
