@@ -1,0 +1,21 @@
+- hosts:
+  - maquina-ansible
+  tasks:
+    - name: "Renomar maquina"
+      shell: hostname "maquina-ansible" && echo "maquina-ansible" > /etc/hostname
+      become: yes # roda como sudo
+
+    - name: "Criando arquivo"
+      shell: echo "testando criação" >> teste.txt
+
+    - name: "Criando um arquivo mantendo o estado"
+      copy: 
+        content: "teste danilo" 
+        dest: "/home/ubuntu/mais_um_arquivo_com_estado.txt"
+        backup: yes
+        owner: ubuntu
+        group: ubuntu
+        mode: 400
+
+# Rodando ansible
+# ansible-playbook -i hosts provisionar.yml -u ubuntu --private-key ../../ssh/id_rsa
