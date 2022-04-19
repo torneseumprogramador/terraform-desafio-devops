@@ -27,9 +27,9 @@
       become: yes # roda com sudo
       with_items:
         - nginx
-        - apt-transport-https
-        - dotnet-sdk-5.0
-        - dotnet-runtime-5.0
+
+    - name: "Instalação dotnet"
+      shell: "sudo apt-get update && sudo apt-get install -y apt-transport-https && sudo apt-get update && sudo apt-get install -y dotnet-sdk-5.0"
 
     - name: "clone projeto"
       ansible.builtin.git:
