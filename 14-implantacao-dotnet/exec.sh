@@ -4,6 +4,8 @@ cd terraform/
 terraform init
 terraform apply -auto-approve
 
+sleep 3  # espera um pouco
+
 ANSIBLE_RETORNO=$(terraform output)
 DNS=(${ANSIBLE_RETORNO//=/ })
 DNS=${DNS[1]}
