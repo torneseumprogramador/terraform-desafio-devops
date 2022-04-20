@@ -1,0 +1,89 @@
+- hosts:
+  - java
+  handlers:
+    - name: "restart nginx"
+      service:
+        name: nginx
+        state: restarted
+      become: yes
+  tasks:
+    - name: "Renomar maquina"
+      shell: hostname "java" && echo "java" > /etc/hostname
+      become: yes # roda como sudo
+
+    - name: "Roda: sudo apt update"
+      become: yes
+      apt:
+        upgrade: yes
+        update_cache: yes
+
+    - name: "Instala pacotes"
+      apt:
+        name: "{{ item }}"
+        state: latest
+      become: yes # roda com sudo
+      with_items:
+        - nginx
+        - default-jdk
+        - mysql-server
+        - python3-pycurl
+        - python3-mysqldb
+        - maven
+
+    - name: "clone projeto"
+      ansible.builtin.git:
+        repo: 'https://github.com/torneseumprogramador/spring-web-youtube.git'
+        dest: /home/ubuntu/spring-web-youtube
+        clone: yes
+        update: yes
+
+    - name: Adicionar no bashrc
+      lineinfile: dest=~/.bashrc line='export USER=root' state=present
+    - name: Adicionar no bashrc
+      lineinfile: dest=~/.bashrc line='export PASSWORD=root' state=present
+    - name: Adicionar no bashrc
+      lineinfile: dest=~/.bashrc line='export DATABASE_URL="mysql://localhost:3306/SpringWebYoutube?createDatabaseIfNotExist=true&useTimezone=true&serverTimezone=UTC"' state=present
+
+    - name: Aplicar o bashrc
+      shell: source ~/.bashrc
+      args:
+        executable: /bin/bash
+
+    - name: "fazendo build do projeto"
+      shell: "cd spring-web-youtube && mvn package -Dmaven.test.skip -DskipTests -Dmaven.javadoc.skip=true"
+    
+    - name: "startando VPS"
+      shell: "cd spring-web-youtube && nohup java -jar target/SpringWeb-1.0.0.jar &"
+
+    - name: "Lavanta serviço do mysql"
+      become: yes
+      service:
+        name: mysql
+        state: started
+
+    - name: "Criando senha root mysql"
+      ignore_errors: yes
+      become: yes
+      mysql_user:
+        name: root
+        host: localhost
+        password: root
+        priv: "*.*:ALL,GRANT"
+        state: present
+
+    - name: "Cria o banco de dados MySQL"
+      mysql_db:
+        name: SpringWebYoutube
+        login_user: root
+        login_password: root
+        state: present
+
+    - name: "Trocando nginx para VPS"
+      copy:
+        src: "nginx/default"
+        dest: "/etc/nginx/sites-available/default"
+      become: yes
+      notify:
+        - "restart nginx"
+# Rodando ansible
+# ansible-playbook -i hosts provisionar.yml -u ubuntu --private-key ../../ssh/id_rsa
