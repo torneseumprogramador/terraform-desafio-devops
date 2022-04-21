@@ -1,0 +1,42 @@
+pipeline {
+    agent any
+
+
+    stages {
+        stage('Build') {
+            steps {
+                echo 'Fazendo build..'
+            }
+        }
+        stage('TDD') {
+            steps {
+                echo 'Rodando teste de unidade....'
+            }
+        }
+        stage('Push hub Docker') {
+            steps {
+                echo 'Push fragmento...'
+            }
+        }
+        stage('DEV') {
+            steps {
+                echo 'deploy em dev....'
+            }
+        }
+        stage('BDD') {
+            steps {
+                echo 'Rodando teste de comportamento....'
+            }
+        }
+        stage('STAGE') {
+            steps {
+                echo 'deploy em stage....'
+            }
+        }
+        stage('PROD') {
+            steps {
+                echo 'deploy em produção....'
+            }
+        }
+    }
+}
