@@ -1,6 +1,7 @@
 variable "arquivos" {
   default = {
     "joao_paulo.txt" = "Olá joão",
+    "joao_amoedo.txt" = "Olá joão",
     "joao_ghissardi.txt" = "Olá joao ghissardi",
     "walter.txt" = "Olá walter",
     "woto.txt" = "Olá woto",

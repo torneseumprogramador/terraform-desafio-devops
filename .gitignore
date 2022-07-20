@@ -50,6 +50,9 @@ Temporary Items
 # Local .terraform directories
 **/.terraform/*
 
+chave.priv
+chave.pub
+
 # .tfstate files
 *.tfstate
 *.tfstate.*
