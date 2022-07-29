@@ -1,0 +1,67 @@
+- hosts:
+  - ec2-swarm-m
+  tasks:
+    - name: "Configura hostname swarm-master"
+      shell: hostname swarm-master-1 && echo "swarm-master-1" > /etc/hostname
+      become: yes
+# ---
+- hosts:
+  - ec2-swarm-w
+  tasks:
+    - name: "Configura hostname swarm-workers"
+      shell: hostname swarm-workers-1 && echo "swarm-workers-1" > /etc/hostname
+      become: yes
+# ---
+- hosts:
+  - ec2-swarm-m
+  - ec2-swarm-w
+
+  tasks:
+    - name: install packages required by docker
+      become: true
+      apt:
+        update_cache: yes
+        state: latest
+        name:
+        - apt-transport-https
+        - ca-certificates
+        - curl
+        - gpg-agent
+        - software-properties-common
+
+    - name: add docker GPG key
+      become: true
+      apt_key:
+        url: https://download.docker.com/linux/ubuntu/gpg
+        state: present
+
+    - name: add docker apt repo
+      become: true
+      apt_repository:
+        repo: deb https://download.docker.com/linux/ubuntu bionic stable
+        state: present
+
+    - name: install docker
+      become: true
+      apt:
+        update_cache: yes
+        state: latest
+        name:
+        - docker-ce
+        - docker-ce-cli
+        - containerd.io
+
+# ---
+- hosts:
+  - ec2-swarm-m
+  become: yes
+  tasks:    
+    # - shell: docker swarm leave --force
+    #   register: ps
+    - shell: docker swarm init --advertise-addr $(hostname -i | awk '{print $1;exit}')
+      register: ps
+    - debug:
+        msg: " '{{ ps.stdout_lines }}' "
+
+
+# ansible-playbook -i hosts provisionar.yml -u azureuser --private-key ../terraform/chave.priv

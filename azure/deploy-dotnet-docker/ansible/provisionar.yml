@@ -1,0 +1,34 @@
+- hosts: all
+  become: yes
+  tasks:
+    - name: "Roda: sudo apt update"
+      apt:
+        upgrade: yes
+        update_cache: yes
+
+    - name: "Instala pacotes em lote"
+      apt:
+        name: "{{ item }}"
+        state: latest
+      with_items:
+        - nginx
+        - docker.io
+        - docker-compose
+
+    - name: "Copiar meu docker compose para o meu servidor"
+      copy:
+        src: "docker/docker-compose.yml"
+        dest: "/root/"
+
+    - name: "Rodar o docker compose"
+      shell: "cd /root && docker-compose up -d"
+
+    - name: "Configurar nginx"
+      copy:
+        src: "nginx/default"
+        dest: "/etc/nginx/sites-available/default"
+
+    - name: "Restart nginx"
+      shell: "systemctl restart nginx"
+
+# ansible-playbook -i hosts provisionar.yml -u azureuser --private-key ../arquivos-organizados/chave.priv
