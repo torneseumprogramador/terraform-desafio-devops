@@ -6,7 +6,9 @@
       become: yes # roda como sudo
 
     - name: "Criando arquivo"
-      shell: echo "testando criação" >> teste.txt
+      shell: |
+        echo "testando criação" >> teste.txt
+        echo "testando criação 2" >> teste.txt
 
     - name: "Criando um arquivo mantendo o estado"
       copy: 
