@@ -2,6 +2,6 @@ version: '3.3'
 services:
   dotnetapp:
     container_name: dotnet-app
-    image: didox/dotnet-avanade50
+    image: didox/dotnet-Imersao
     ports:
       - "5001:80"

@@ -3,7 +3,7 @@ resource "random_pet" "rg-name" {
 }
 
 resource "azurerm_resource_group" "rg" {
-  name      = "grupoTerraformAvanade50"
+  name      = "grupoTerraformImersao"
   # name      = random_pet.rg-name.id
   location  = var.resource_group_location
 }
